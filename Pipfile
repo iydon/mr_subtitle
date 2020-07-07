@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.mirrors.ustc.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+requests = "*"
+pydub = "*"
+ipython = "*"
+install = "*"
+aliyun-python-sdk-core = "*"
+oss2 = "*"
+cryptography = "*"
+selenium = "*"
+tqdm = "*"
+
+[requires]
+python_version = "3.8"
