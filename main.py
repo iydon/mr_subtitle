@@ -2,7 +2,7 @@ import os
 import time
 import tqdm
 
-from mr_subtitle.config import pickle_path
+from mr_subtitle.config import cache_dir, pickle_path
 from mr_subtitle.models import Video, Session, Subtitle
 
 
@@ -15,14 +15,15 @@ else:
 
 # step 2
 print('下载视频音频（默认 1p，可以根据 video.number 进行迭代）')
-video = Video('BV12J411p7S7')
+video = Video('BV14t4y1Q7ne', cache_dir)
 filename = video.audio(p=1)
 
 # step 3
 print('转换视频到文字，并按照字幕文件的格式存储')
-subtitle = Subtitle()
-subtitle.from_['audio'](filename)
-subtitle.to['srt'](filename.replace('.mp3', '.srt'))
+subtitle = Subtitle(cache_dir)
+subtitle.from_['audio'](filename, max_single_segment_time=5000)
+for format in ('json', 'srt'):
+    subtitle.to[format](filename.replace('.mp3', f'.{format}'))
 
 # step 4
 print('手动修改字幕文件并覆盖原先记录')
@@ -38,4 +39,4 @@ for item in tqdm.tqdm(subtitle.data):
         p=1, mode=1, color=0xcc0273,
     )
     print(item['BeginTime']/1000, item['Text'], response)
-    time.sleep((item['EndTime']-item['BeginTime'])/1000)
+    time.sleep(10)
